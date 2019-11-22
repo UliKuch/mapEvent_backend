@@ -2,19 +2,31 @@
 export {};
 
 const express = require('express');
+const mongoose = require("mongoose");
 const { ApolloServer } = require('apollo-server-express');
 
+// enable reading from .env file
+require("dotenv").config();
+
+// express
 const app = express();
 const port = process.env.PORT || 5000;
 
-const typeDefs = require('./schema');
+// db
+const db = process.env.MONGO_URI;
 
+// GraphQL
+const typeDefs = require('./schema');
 const resolvers = {
   Query: {
     info: () => 'This is an info.',
   },
+  Mutation: {
+    postEvent: (parent: undefined, args: any): string => 'This is a TODO',
+  }
 };
 
+// Apollo server
 const server = new ApolloServer({
   typeDefs,
   resolvers
@@ -29,3 +41,8 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   return console.log(`GraphQL API server on ${port}${server.graphqlPath}`);
 });
+
+// connecting to db
+mongoose.connect(db, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
+  .then(() => console.log("Connection to Mongo DB established"))
+  .catch(err => console.log(err));

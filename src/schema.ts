@@ -15,8 +15,6 @@ const typeDefs = gql`
       img: String,
       properties: [Property!]
     ): Event!
-    signup():
-    login():
   }
 
   type Event {
@@ -38,11 +36,11 @@ const typeDefs = gql`
   }
 
   type Point {
-
+    id: ID!
   }
 
   type Property {
-
+    id: ID!
   }
 `;
 
