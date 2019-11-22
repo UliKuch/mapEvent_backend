@@ -1,0 +1,9 @@
+# dependencies
+/node_modules
+
+# keys
+.env
+
+# transpiled output files
+/dist
+*.map
