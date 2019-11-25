@@ -7,41 +7,51 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    postEvent(
-      geometry: Point!,
+    addEvent(
       category: String!, 
       title: String!,
       body: String,
       img: String,
-      properties: [Property!]
     ): Event!
   }
 
   type Event {
-    geometry: Point!
     id: ID!
-    category: String!
+    geometry: GeoJSONPoint!
+    # TODO: research on radius and MongoDB
+    radius: Float
+    category: String
     title: String!
     body: String
     img: String
-    properties: [Property!]
-    postedBy: User
+    createdBy: User!
+    creationDate: Date!
+    comments: [comment!]
   }
 
   type User {
     id: ID!
-    name: String!
     email: String!
+    username: String
+    firstName: String!
+    middleName: String
+    lastName: String!
     events: [Event!]!
   }
 
-  type Point {
+  type Comment {
     id: ID!
+    user: User!
+    message: String!
+    postedOn: Date!
   }
 
-  type Property {
-    id: ID!
+  type GeoJSONPoint {
+    type: String!
+    coordinates: Coordinates!
   }
+
+  scalar Coordinates
 `;
 
 module.exports = typeDefs;
