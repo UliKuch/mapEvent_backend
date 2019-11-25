@@ -2,11 +2,11 @@
 export {};
 
 const express = require('express');
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { ApolloServer } = require('apollo-server-express');
 
 // enable reading from .env file
-require("dotenv").config();
+require('dotenv').config();
 
 // express
 const app = express();
@@ -17,14 +17,7 @@ const db = process.env.MONGO_URI;
 
 // GraphQL
 const typeDefs = require('./schema');
-const resolvers = {
-  Query: {
-    info: () => 'This is an info.',
-  },
-  Mutation: {
-    postEvent: (parent: undefined, args: any): string => 'This is a TODO',
-  }
-};
+const resolvers = require('./resolvers');
 
 // Apollo server
 const server = new ApolloServer({
