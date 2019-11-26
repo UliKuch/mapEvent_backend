@@ -6,10 +6,37 @@ import userModel from './model/userModel';
 
 import { IEventDocument, IUserDocument } from './interfaces';
 
+// custom coordinates scalar
+const CoordinatesType = new GraphQLScalarType({
+  name: 'Coordinates',
+  description: 'A set of coordinates. x, y',
+  serialize(value) {
+    return isCoordinate(value)
+  },
+  parseValue(value) {
+    return isCoordinate(value)
+  },
+  parseLiteral(ast: any) {
+    return isCoordinate(ast.value);
+  },
+});
+
+function isCoordinate(value: number[]) {
+  console.log(value)
+  if (value.length === 2 && typeof value[0] === 'number' && typeof value[1] === 'number') {
+    return value;
+  }
+  return null;
+}
+
+
 module.exports = {
   Query: {
-    event: async (parent, args, context, info) => {
-      return null
+    events: async (parent, args, context, info) => {
+      return await eventModel.find({});
+    },
+    event: async (parent, args, { id }, info) => {
+      return await eventModel.findOne({ id: id})
     },
   },
   Mutation: {
@@ -37,9 +64,6 @@ module.exports = {
     },
   },
   Event: {
-    // geometry: (parent, args, context, info) => {
-    //   return null
-    // },
   },
   User: {
     events: (parent, args, context, info) => {
@@ -53,23 +77,8 @@ module.exports = {
   },
   GeoJSONPoint: {
     type: () => 'Point',
-    // coordinates: (parent, args, context, info) => {
-    //   return null
-    // },
   },
-  Coordinates: new GraphQLScalarType({
-    name: 'Coordinates',
-    description: 'A set of coordinates. x, y',
-    parseValue(value) {
-      return value;
-    },
-    serialize(value) {
-      return value;
-    },
-    parseLiteral(ast: any) {
-      return ast.value;
-    },
-  }),
+  Coordinates: () => CoordinatesType,
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'Custom date scalar type',
