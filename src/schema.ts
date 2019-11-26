@@ -2,8 +2,10 @@ import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
   type Query {
-    info: String!
-    event: Event!
+    events: [Event!]!
+    event(
+      id: ID!,
+    ): Event!
   }
 
   type Mutation {
@@ -26,7 +28,7 @@ const typeDefs = gql`
     title: String!
     body: String
     img: String
-    createdBy: User!
+    # createdBy: User!
     creationDate: Date!
     comments: [Comment!]
   }
