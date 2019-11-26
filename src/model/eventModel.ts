@@ -8,16 +8,7 @@ const eventSchema: Schema = new Schema({
       type: String,
       required: true,
     },
-    coordinates: {
-      longitude: {
-        type: Number,
-        required: true,
-      },
-      latitude: {
-        type: Number,
-        required: true,
-      },
-    }
+    coordinates: [Number],
   },
   radius: Number,
   category: String,
@@ -30,21 +21,17 @@ const eventSchema: Schema = new Schema({
   createdBy: {
     id: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
-      required: true,
     },
     username: String,
     firstName: {
       type: String,
-      required: true,
     },
     middleName: String,
     lastName: {
       type: String,
-      required: true,
     },
   },
   creationDate: {
