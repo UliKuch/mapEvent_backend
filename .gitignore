@@ -7,3 +7,5 @@
 # transpiled output files
 /dist
 *.map
+
+yarn-error.log
