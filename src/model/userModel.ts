@@ -1,6 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose, { Schema, Model } from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+import { IUserDocument } from '../interfaces';
+
+const userSchema: Schema = new Schema({
   email: {
     type: String,
     required: true,
@@ -25,8 +27,10 @@ const userSchema = new mongoose.Schema({
       required: true,
     },
     geometry: {
-
-
+      type: {
+        type: String!,
+        required: true,
+      },
       latitude: {
         type: Number,
         required: true,
@@ -35,10 +39,8 @@ const userSchema = new mongoose.Schema({
         type: Number,
         required: true,
       }
-
-
-
     },
+    radius: Number,
     category: String,
     title: {
       type: String,
@@ -88,4 +90,6 @@ const userSchema = new mongoose.Schema({
   }]
 })
 
-module.exports = mongoose.model('user', userSchema);
+const userModel: Model<IUserDocument> = mongoose.model('user', userSchema);
+
+export default userModel;
