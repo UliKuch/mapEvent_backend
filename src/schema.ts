@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
   type Query {
@@ -8,7 +8,9 @@ const typeDefs = gql`
 
   type Mutation {
     addEvent(
-      category: String!, 
+      coordinates: Coordinates,
+      radius: Float,
+      category: String, 
       title: String!,
       body: String,
       img: String,
@@ -26,7 +28,7 @@ const typeDefs = gql`
     img: String
     createdBy: User!
     creationDate: Date!
-    comments: [comment!]
+    comments: [Comment!]
   }
 
   type User {
@@ -52,6 +54,8 @@ const typeDefs = gql`
   }
 
   scalar Coordinates
+
+  scalar Date
 `;
 
 module.exports = typeDefs;
