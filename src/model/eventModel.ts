@@ -1,5 +1,6 @@
 import mongoose, { Schema, Model } from 'mongoose';
 
+// import Typescript interfaces
 import { IEventDocument } from '../interfaces';
 
 const eventSchema: Schema = new Schema({
@@ -19,20 +20,8 @@ const eventSchema: Schema = new Schema({
   body: String,
   img: String,
   createdBy: {
-    id: {
-      type: String,
-    },
-    // email: {
-    //   type: String,
-    // },
-    // username: String,
-    // firstName: {
-    //   type: String,
-    // },
-    // middleName: String,
-    // lastName: {
-    //   type: String,
-    // },
+    type: Schema.Types.ObjectId,
+    ref: 'user',
   },
   creationDate: {
     type: Date,
@@ -44,24 +33,8 @@ const eventSchema: Schema = new Schema({
       required: true,
     },
     user: {
-      id: {
-        type: String,
-        required: true,
-      },
-      // email: {
-      //   type: String,
-      //   required: true,
-      // },
-      // username: String,
-      // firstName: {
-      //   type: String,
-      //   required: true,
-      // },
-      // middleName: String,
-      // lastName: {
-      //   type: String,
-      //   required: true,
-      // },  
+      type: Schema.Types.ObjectId,
+      ref: 'user',
     },
     message: {
       type: String,

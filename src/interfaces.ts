@@ -12,7 +12,7 @@ export interface IUser {
   firstName: string;
   middleName?: string;
   lastName: string;
-  events: Event[];
+  events: IEvent[];
 };
 
 export interface IEvent {
