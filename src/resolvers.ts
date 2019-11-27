@@ -2,11 +2,17 @@ import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
 import { AuthenticationError } from 'apollo-server-express';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 
 import Event from './model/eventModel';
 import User from './model/userModel';
 
 import { IEventDocument, IUserDocument } from './interfaces';
+
+// enable reading from .env file
+require('dotenv').config();
+
+const secret: jwt.Secret = process.env.JWT_SECRET;
 
 // custom coordinates scalar
 const CoordinatesType = new GraphQLScalarType({
@@ -88,8 +94,47 @@ module.exports = {
         password: password,      
       })
 
-      return await newUser.save();
-    }
+      await newUser.save();
+
+      // create JWT payload
+      const payload = {
+        id: newUser._id,
+      };
+      const options: jwt.SignOptions = {expiresIn: "2 days"};
+
+      // sign token
+      const token: string = jwt.sign(payload, secret, options);
+
+      console.log(token);
+
+      return token;
+    },
+    login: async (parent, args, context, info) => {
+      const password = await bcrypt.hash(args.password, 10);
+
+      const user = await User.findOne({ email: args.email });
+
+      if (!user) {
+        throw new AuthenticationError('No user with this email address.')
+      }
+
+      if (!bcrypt.compare(password, user.password)) {
+        throw new AuthenticationError('Password incorrect.')
+      }
+
+      // create JWT payload
+      const payload = {
+        id: user._id,
+      };
+      const options: jwt.SignOptions = {expiresIn: "2 days"};
+
+      // sign token
+      const token: string = jwt.sign(payload, secret, options);
+
+      console.log(token);
+
+      return token
+    },
   },
   Event: {
   },
