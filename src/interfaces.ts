@@ -12,6 +12,7 @@ export interface IUser {
   firstName: string;
   middleName?: string;
   lastName: string;
+  password?: string;
   events: IEvent[];
 };
 
