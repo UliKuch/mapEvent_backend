@@ -1,8 +1,8 @@
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
 
-import eventModel from './model/eventModel';
-import userModel from './model/userModel';
+import Event from './model/eventModel';
+import User from './model/userModel';
 
 import { IEventDocument, IUserDocument } from './interfaces';
 
@@ -21,8 +21,8 @@ const CoordinatesType = new GraphQLScalarType({
   },
 });
 
+// helper function for coordinates scalar
 function isCoordinate(value: number[]) {
-  console.log(value)
   if (value.length === 2 && typeof value[0] === 'number' && typeof value[1] === 'number') {
     return value;
   }
@@ -33,18 +33,20 @@ function isCoordinate(value: number[]) {
 module.exports = {
   Query: {
     events: async (parent, args, context, info) => {
-      return await eventModel.find({});
+      return await Event.find({});
     },
     event: async (parent, args, { id }, info) => {
-      return await eventModel.findOne({ id: id})
+      return await Event.findOne({ id: id})
     },
   },
   Mutation: {
     addEvent: async (parent, args, context, info) => {
 
+      // TODO: add authentication by searching context.userId in db
+
       const now: Date = new Date();
 
-      const newEvent: IEventDocument = new eventModel({
+      const newEvent: IEventDocument = new Event({
         geometry: {
           type: "Point",
           coordinates: args.coordinates,            
@@ -55,7 +57,7 @@ module.exports = {
         body: args.body,
         img: args.img,
         // add after user authentication is implemented
-        // createdBy: context.xxx,
+        // createdBy: context.userId,
         creationDate: now,
         comments: [],
       })
@@ -79,6 +81,7 @@ module.exports = {
     type: () => 'Point',
   },
   Coordinates: () => CoordinatesType,
+  // from https://www.apollographql.com/docs/graphql-tools/scalars/
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'Custom date scalar type',
