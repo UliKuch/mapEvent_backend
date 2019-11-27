@@ -1,5 +1,7 @@
 import { GraphQLScalarType } from 'graphql';
 import { Kind } from 'graphql/language';
+import { AuthenticationError } from 'apollo-server-express';
+import * as bcrypt from 'bcrypt';
 
 import Event from './model/eventModel';
 import User from './model/userModel';
@@ -33,16 +35,20 @@ function isCoordinate(value: number[]) {
 module.exports = {
   Query: {
     events: async (parent, args, context, info) => {
-      return await Event.find({});
+      return await Event.find({}).populate('user');
     },
     event: async (parent, args, { id }, info) => {
-      return await Event.findOne({ id: id})
+      return await Event.findOne({ id: id}).populate('user');
     },
   },
   Mutation: {
     addEvent: async (parent, args, context, info) => {
 
-      // TODO: add authentication by searching context.userId in db
+      const user = await User.findById(context.user.userId);
+
+      if (!user) {
+        throw new AuthenticationError('You are not logged in.');
+      }
 
       const now: Date = new Date();
 
@@ -56,14 +62,34 @@ module.exports = {
         title: args.title,
         body: args.body,
         img: args.img,
-        // add after user authentication is implemented
-        // createdBy: context.userId,
+        createdBy: user._id,
         creationDate: now,
         comments: [],
       })
 
       return await newEvent.save();
     },
+    signup: async (parent, args, context, info) => {
+
+      const userExists = await User.findOne({ email: args.email });
+
+      if (userExists) {
+        throw new Error('A user with this email address already exists.');
+      }
+
+      const password = await bcrypt.hash(args.password, 10);
+
+      const newUser: IUserDocument = new User({
+        email: args.email,
+        username: args.username,
+        firstName: args.firstName,
+        middleName: args.middleName,
+        lastName: args.lastName,  
+        password: password,      
+      })
+
+      return await newUser.save();
+    }
   },
   Event: {
   },

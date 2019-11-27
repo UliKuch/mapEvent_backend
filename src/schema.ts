@@ -17,6 +17,14 @@ const typeDefs = gql`
       body: String,
       img: String,
     ): Event!
+    signup(
+      email: String!,
+      username: String,
+      firstName: String!,
+      middleName: String,
+      lastName: String!,
+      password: String!,
+    ): User
   }
 
   type Event {
