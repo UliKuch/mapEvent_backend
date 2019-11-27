@@ -18,11 +18,13 @@ const db = process.env.MONGO_URI;
 // GraphQL
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
+const auth = require('./utils');
 
 // Apollo server
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: auth,
 });
 
 server.applyMiddleware({ app });
