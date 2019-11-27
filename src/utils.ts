@@ -9,18 +9,20 @@ const secret = process.env.JWT_SECRET;
 
 interface IauthObj {
   // specify authUser object in detail when token structure is determined
-  authUser?: object
+  user?: object
 }
 
+// reads token from req header and stores data in user object
 // partly inspired by https://www.toptal.com/graphql/creating-your-first-graphql-api
-const auth = ({ req }) => {
+const readTokenFromHeader = ({ req }) => {
   const authObj: IauthObj = {};
 
   const authHeader = req.headers.authorization;
   const token = authHeader ? authHeader.replace('Bearer ', '') : undefined;
-  authObj.authUser = token ? jwt.verify(token, secret) : undefined;
+  
+  authObj.user = token ? jwt.verify(token, secret) : undefined;
 
   return authObj;
 }
 
-module.exports = auth;
+module.exports = readTokenFromHeader;
