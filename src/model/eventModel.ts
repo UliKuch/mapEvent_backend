@@ -9,7 +9,10 @@ const eventSchema: Schema = new Schema({
       type: String,
       required: true,
     },
-    coordinates: [Number],
+    coordinates: {
+      type: [Number],
+      unique: true,
+    }
   },
   radius: Number,
   category: String,
