@@ -24,7 +24,8 @@ const typeDefs = gql`
       middleName: String,
       lastName: String!,
       password: String!,
-    ): User
+    ): String!
+    login(email: String!, password: String!): String!
   }
 
   type Event {
