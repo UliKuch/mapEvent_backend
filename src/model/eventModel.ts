@@ -22,17 +22,17 @@ const eventSchema: Schema = new Schema({
     id: {
       type: String,
     },
-    email: {
-      type: String,
-    },
-    username: String,
-    firstName: {
-      type: String,
-    },
-    middleName: String,
-    lastName: {
-      type: String,
-    },
+    // email: {
+    //   type: String,
+    // },
+    // username: String,
+    // firstName: {
+    //   type: String,
+    // },
+    // middleName: String,
+    // lastName: {
+    //   type: String,
+    // },
   },
   creationDate: {
     type: Date,
@@ -48,20 +48,20 @@ const eventSchema: Schema = new Schema({
         type: String,
         required: true,
       },
-      email: {
-        type: String,
-        required: true,
-      },
-      username: String,
-      firstName: {
-        type: String,
-        required: true,
-      },
-      middleName: String,
-      lastName: {
-        type: String,
-        required: true,
-      },  
+      // email: {
+      //   type: String,
+      //   required: true,
+      // },
+      // username: String,
+      // firstName: {
+      //   type: String,
+      //   required: true,
+      // },
+      // middleName: String,
+      // lastName: {
+      //   type: String,
+      //   required: true,
+      // },  
     },
     message: {
       type: String,
@@ -74,6 +74,6 @@ const eventSchema: Schema = new Schema({
   }]
 })
 
-const eventModel: Model<IEventDocument> = mongoose.model('event', eventSchema);
+const Event: Model<IEventDocument> = mongoose.model('event', eventSchema);
 
-export default eventModel;
+export default Event;
