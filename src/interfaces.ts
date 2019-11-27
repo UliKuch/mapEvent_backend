@@ -23,9 +23,9 @@ export interface IEvent {
   title: string;
   body?: string;
   img?: string;
-  // createdBy: DBUser;
+  // createdBy: IUser; (or IUser.id? IUser._id? id?)
   creationDate: Date;
-  comments: IComment[];
+  comments: IComment[]; // or id? depends on mongoose schema (nested vs. reference)
 };
 
 // extend IEvent & IUser interfaces for using them in DB
