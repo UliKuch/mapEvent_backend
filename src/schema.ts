@@ -37,7 +37,7 @@ const typeDefs = gql`
     title: String!
     body: String
     img: String
-    # createdBy: User!
+    createdBy: User!
     creationDate: Date!
     comments: [Comment!]
   }
