@@ -15,9 +15,22 @@ const port = process.env.PORT || 5000;
 // db
 const db = process.env.MONGO_URI;
 
+// GraphQL resolvers
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
+const GeoJSONPoint = require('./resolvers/GeoJSONPoint');
+const Coordinates = require('./resolvers/Coordinates');
+const Date = require('./resolvers/Date');
+
 // GraphQL
 const typeDefs = require('./schema');
-const resolvers = require('./resolvers');
+const resolvers = {
+  Query,
+  Mutation,
+  GeoJSONPoint,
+  Coordinates,
+  Date,
+};
 const readTokenFromHeader = require('./utils');
 
 // Apollo server
