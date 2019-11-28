@@ -11,7 +11,8 @@ const eventSchema: Schema = new Schema({
     },
     coordinates: {
       type: [Number],
-      unique: true,
+      // commented out because only the combination of two values whould be unique
+      // unique: true,
     }
   },
   radius: Number,
