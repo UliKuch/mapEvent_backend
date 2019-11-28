@@ -13,7 +13,7 @@ export interface IUser {
   middleName?: string;
   lastName: string;
   password?: string;
-  events: IEvent[];
+  events: IEvent[] | IEventDocument[];
 };
 
 export interface IEvent {
@@ -24,9 +24,9 @@ export interface IEvent {
   title: string;
   body?: string;
   img?: string;
-  // createdBy: IUser; (or IUser.id? IUser._id? id?)
+  createdBy: IUser | IUserDocument;
   creationDate: Date;
-  comments: IComment[]; // or id? depends on mongoose schema (nested vs. reference)
+  comments: IComment[];
 };
 
 // extend IEvent & IUser interfaces for using them in DB
