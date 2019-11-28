@@ -41,10 +41,23 @@ function isCoordinate(value: number[]) {
 module.exports = {
   Query: {
     events: async (parent, args, context, info) => {
-      return await Event.find({}).populate('user');
+
+      // find all events in db
+      const events = await Event.find({})
+      // populate createdBy field with a user and user's events field with events
+      .populate({
+        path: 'createdBy',
+        populate: { path: 'events' }
+      });
+
+      return events;
     },
     event: async (parent, args, { id }, info) => {
-      return await Event.findOne({ id: id}).populate('user');
+      return await Event.findOne({ id: id})
+      .populate({
+        path: 'createdBy',
+        populate: { path: 'events' }
+      });
     },
   },
   Mutation: {
@@ -56,24 +69,36 @@ module.exports = {
         throw new AuthenticationError('You are not logged in.');
       }
 
+      // commented out because combination of coordinates is not unique yet
+      // const eventExists = await Event.findOne({ coordinates: args.coordinates });
+      // if (eventExists) {
+      //   throw new Error('An event with these exact coordinates already exists.');
+      // }
+
       const now: Date = new Date();
 
       const newEvent: IEventDocument = new Event({
         geometry: {
           type: "Point",
-          coordinates: args.coordinates,            
+          coordinates: args.coordinates,
         },
         radius: args.radius,
         category: args.category,
         title: args.title,
         body: args.body,
         img: args.img,
-        createdBy: user._id,
+        // user instead of user._id to enable requesting createdBy in GraphQL on addEvent
+        createdBy: user,
         creationDate: now,
         comments: [],
       })
 
-      return await newEvent.save();
+      user.events.push(newEvent._id);
+      await user.save();
+
+      await newEvent.save();
+
+      return newEvent;
     },
     signup: async (parent, args, context, info) => {
 
@@ -90,22 +115,20 @@ module.exports = {
         username: args.username,
         firstName: args.firstName,
         middleName: args.middleName,
-        lastName: args.lastName,  
-        password: password,      
+        lastName: args.lastName,
+        password: password,
       })
 
       await newUser.save();
 
       // create JWT payload
       const payload = {
-        id: newUser._id,
+        userId: newUser._id,
       };
       const options: jwt.SignOptions = {expiresIn: "2 days"};
 
       // sign token
       const token: string = jwt.sign(payload, secret, options);
-
-      console.log(token);
 
       return token;
     },
@@ -124,14 +147,12 @@ module.exports = {
 
       // create JWT payload
       const payload = {
-        id: user._id,
+        userId: user._id,
       };
       const options: jwt.SignOptions = {expiresIn: "2 days"};
 
       // sign token
       const token: string = jwt.sign(payload, secret, options);
-
-      console.log(token);
 
       return token
     },
