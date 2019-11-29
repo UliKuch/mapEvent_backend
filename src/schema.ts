@@ -39,7 +39,7 @@ const typeDefs = gql`
     img: String
     createdBy: User!
     creationDate: Date!
-    comments: [Comment!]
+    comments: [Comment!]!
   }
 
   type User {

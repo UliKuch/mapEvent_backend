@@ -15,7 +15,9 @@ require('dotenv').config();
 // jwt secret
 const secret: jwt.Secret = process.env.JWT_SECRET;
 
+
 // *************** addEvent mutation ***************
+
 export async function addEvent(parent, args, context, info) {
 
   // find user in db
@@ -31,7 +33,6 @@ export async function addEvent(parent, args, context, info) {
   // if (eventExists) {
   //   throw new Error('An event with these exact coordinates already exists.');
   // }
-
 
   const now: Date = new Date();
 
@@ -56,13 +57,15 @@ export async function addEvent(parent, args, context, info) {
   user.events.push(newEvent._id);
   
   // save user and event to db
-  await user.save();
   await newEvent.save();
+  await user.save();
 
   return newEvent;
 }
 
+
 // *************** signup mutation ***************
+
 export async function signup(parent, args, context, info) {
   
   // check if user's email already exists in db
@@ -99,7 +102,9 @@ export async function signup(parent, args, context, info) {
   return token;
 }
 
+
 // *************** login mutation ***************
+
 export async function login(parent, args, context, info) {
 
   // hash password
