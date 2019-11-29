@@ -3,7 +3,7 @@ import { Kind } from 'graphql/language';
 
 // custom date scalar
 // from https://www.apollographql.com/docs/graphql-tools/scalars/
-export const DateType = new GraphQLScalarType({
+export const Date = new GraphQLScalarType({
   name: 'Date',
   description: 'Custom date scalar type',
   parseValue(value) {
