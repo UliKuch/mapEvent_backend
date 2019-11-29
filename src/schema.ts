@@ -20,7 +20,6 @@ const typeDefs = gql`
     login(email: String!, password: String!): String!
     addEvent(
       coordinates: Coordinates,
-      radius: Float,
       category: String, 
       title: String!,
       body: String,
@@ -32,8 +31,6 @@ const typeDefs = gql`
   type Event {
     id: ID!
     geometry: GeoJSONPoint!
-    # TODO: research on radius and MongoDB
-    radius: Float
     category: String
     title: String!
     body: String

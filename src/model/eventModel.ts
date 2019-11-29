@@ -15,7 +15,6 @@ const eventSchema: Schema = new Schema({
       // unique: true,
     }
   },
-  radius: Number,
   category: String,
   title: {
     type: String,

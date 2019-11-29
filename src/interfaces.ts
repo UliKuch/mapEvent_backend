@@ -21,7 +21,6 @@ export interface IUser {
 export interface IEvent {
   // make id optional to include new events that do not have an ID yet
   geometry: GeoJSON.Point;
-  radius?: number;
   category?: string;
   title: string;
   body?: string;

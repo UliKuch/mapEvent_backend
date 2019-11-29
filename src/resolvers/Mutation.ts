@@ -115,7 +115,6 @@ export async function addEvent(parent, args, context, info) {
       type: "Point",
       coordinates: args.coordinates,
     },
-    radius: args.radius,
     category: args.category,
     title: args.title,
     body: args.body,
@@ -157,8 +156,6 @@ export async function addComment(parent, { message, eventId }, context, info) {
     message: message,
     postedOn: now,    
   }
-
-  console.log(newComment);
 
   // find corresponding event in db
   const event = await Event.findById(eventId);
