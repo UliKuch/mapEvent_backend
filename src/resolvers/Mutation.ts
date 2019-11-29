@@ -16,54 +16,6 @@ require('dotenv').config();
 const secret: jwt.Secret = process.env.JWT_SECRET;
 
 
-// *************** addEvent mutation ***************
-
-export async function addEvent(parent, args, context, info) {
-
-  // find user in db
-  const user = await User.findById(context.user.userId);
-
-  // throw error if user is not logged in
-  if (!user) {
-    throw new AuthenticationError('You are not logged in.');
-  }
-
-  // commented out because combination of coordinates is not unique yet
-  // const eventExists = await Event.findOne({ coordinates: args.coordinates });
-  // if (eventExists) {
-  //   throw new Error('An event with these exact coordinates already exists.');
-  // }
-
-  const now: Date = new Date();
-
-  // create new event mongoose document
-  const newEvent: IEventDocument = new Event({
-    geometry: {
-      type: "Point",
-      coordinates: args.coordinates,
-    },
-    radius: args.radius,
-    category: args.category,
-    title: args.title,
-    body: args.body,
-    img: args.img,
-    // user instead of user._id to enable requesting createdBy in GraphQL on addEvent
-    createdBy: user,
-    creationDate: now,
-    comments: [],
-  })
-
-  // store new event id in user's events array
-  user.events.push(newEvent._id);
-  
-  // save user and event to db
-  await newEvent.save();
-  await user.save();
-
-  return newEvent;
-}
-
-
 // *************** signup mutation ***************
 
 export async function signup(parent, args, context, info) {
@@ -134,3 +86,53 @@ export async function login(parent, args, context, info) {
 
   return token
 }
+
+
+// *************** addEvent mutation ***************
+
+export async function addEvent(parent, args, context, info) {
+
+  // find user in db
+  const user = await User.findById(context.user.userId);
+
+  // throw error if user is not logged in
+  if (!user) {
+    throw new AuthenticationError('You are not logged in.');
+  }
+
+  // commented out because combination of coordinates is not unique yet
+  // const eventExists = await Event.findOne({ coordinates: args.coordinates });
+  // if (eventExists) {
+  //   throw new Error('An event with these exact coordinates already exists.');
+  // }
+
+  const now: Date = new Date();
+
+  // create new event mongoose document
+  const newEvent: IEventDocument = new Event({
+    geometry: {
+      type: "Point",
+      coordinates: args.coordinates,
+    },
+    radius: args.radius,
+    category: args.category,
+    title: args.title,
+    body: args.body,
+    img: args.img,
+    // user instead of user._id to enable requesting createdBy in GraphQL on addEvent
+    createdBy: user,
+    creationDate: now,
+    comments: [],
+  })
+
+  // store new event id in user's events array
+  user.events.push(newEvent._id);
+  
+  // save user and event to db
+  await newEvent.save();
+  await user.save();
+
+  return newEvent;
+}
+
+
