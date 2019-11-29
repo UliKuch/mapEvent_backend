@@ -1,8 +1,5 @@
 import * as jwt from 'jsonwebtoken';
 
-// treat file as module to avoid "cannot redeclare block-scoped variable" error
-export {};
-
 // enable reading from .env file
 require('dotenv').config();
 
