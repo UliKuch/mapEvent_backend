@@ -9,14 +9,6 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addEvent(
-      coordinates: Coordinates,
-      radius: Float,
-      category: String, 
-      title: String!,
-      body: String,
-      img: String,
-    ): Event!
     signup(
       email: String!,
       username: String,
@@ -26,6 +18,14 @@ const typeDefs = gql`
       password: String!,
     ): String!
     login(email: String!, password: String!): String!
+    addEvent(
+      coordinates: Coordinates,
+      radius: Float,
+      category: String, 
+      title: String!,
+      body: String,
+      img: String,
+    ): Event!
   }
 
   type Event {
