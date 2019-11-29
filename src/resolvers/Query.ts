@@ -1,6 +1,8 @@
 import Event from '../model/eventModel';
 
+
 // *************** all events query ***************
+
 export async function events(parent, args, context, info) {
 
   // find all events in db
@@ -15,7 +17,9 @@ export async function events(parent, args, context, info) {
   return events;
 }
 
+
 // *************** single event by id query ***************
+
 export async function event(parent, args, { id }, info) {
 
   // find event in db
