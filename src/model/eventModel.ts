@@ -32,10 +32,6 @@ const eventSchema: Schema = new Schema({
     required: true,
   },
   comments: [{
-    id: {
-      type: String,
-      required: true,
-    },
     user: {
       type: Schema.Types.ObjectId,
       ref: 'user',

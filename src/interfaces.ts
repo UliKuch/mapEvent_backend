@@ -1,6 +1,8 @@
 import { Document } from 'mongoose';
+import { ObjectId } from 'bson';
 
 export interface IComment {
+  id?: string | object | ObjectId;
   user: IUser;
   message: string;
   postedOn: Date;

@@ -26,6 +26,7 @@ const typeDefs = gql`
       body: String,
       img: String,
     ): Event!
+    addComment(message: String!, eventId: ID!): Comment!
   }
 
   type Event {

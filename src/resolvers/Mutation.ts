@@ -1,13 +1,14 @@
 import { AuthenticationError } from 'apollo-server-express';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 // mongoose models
 import Event from '../model/eventModel';
 import User from '../model/userModel';
 
 // interfaces for mongoose documents
-import { IEventDocument, IUserDocument } from '../interfaces';
+import { IEventDocument, IUserDocument, IComment } from '../interfaces';
 
 // enable reading from .env file
 require('dotenv').config();
@@ -95,9 +96,9 @@ export async function addEvent(parent, args, context, info) {
   // find user in db
   const user = await User.findById(context.user.userId);
 
-  // throw error if user is not logged in
+  // throw error if user is not found in db
   if (!user) {
-    throw new AuthenticationError('You are not logged in.');
+    throw new AuthenticationError('You are not logged in or user does not exist.');
   }
 
   // commented out because combination of coordinates is not unique yet
@@ -136,3 +137,44 @@ export async function addEvent(parent, args, context, info) {
 }
 
 
+// *************** addComment mutation ***************
+
+export async function addComment(parent, { message, eventId }, context, info) {
+
+  // find user in db
+  const user = await User.findById(context.user.userId);
+
+  // throw error if user is not found in db
+  if (!user) {
+    throw new AuthenticationError('You are not logged in or user does not exist.');
+  }
+  
+  const now: Date = new Date();
+
+  // create new comment object
+  const newComment: IComment = {
+    user: context.user.userId,
+    message: message,
+    postedOn: now,    
+  }
+
+  console.log(newComment);
+
+  // find corresponding event in db
+  const event = await Event.findById(eventId);
+
+  // throw error if event is not found in db
+  if (!event) {
+    throw new Error('Event not found in database.')
+  }
+
+  // add new comment to event's comment array
+  event.comments.push(newComment);
+  
+  // save updated event to db
+  await event.save();
+
+  // return newly added comment from event document
+  // (newComment does not have an id yet)
+  return event.comments[event.comments.length - 1]
+}
