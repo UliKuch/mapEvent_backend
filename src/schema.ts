@@ -58,8 +58,17 @@ const typeDefs = gql`
   }
 
   type GeoJSONPoint {
-    type: String!
+    type: GeoJSONPointType
     coordinates: Coordinates!
+  }
+
+  input GeoJSONPointInput {
+    type: GeoJSONPointType
+    coordinates: Coordinates!
+  }
+
+  enum GeoJSONPointType {
+    Point
   }
 
   scalar Coordinates

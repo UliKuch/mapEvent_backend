@@ -8,11 +8,11 @@ const eventSchema: Schema = new Schema({
     type: {
       type: String,
       required: true,
+      enum: ['Point'],
     },
     coordinates: {
       type: [Number],
-      // commented out because only the combination of two values whould be unique
-      // unique: true,
+      required: true,
     }
   },
   category: String,
