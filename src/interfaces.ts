@@ -2,6 +2,7 @@ import { Document } from 'mongoose';
 import { ObjectId } from 'bson';
 
 export interface IComment {
+  // make id optional to include new comments that do not have an ID yet
   id?: string | object | ObjectId;
   user: IUser;
   message: string;
@@ -9,6 +10,7 @@ export interface IComment {
 }
 
 export interface IUser {
+  id?: string | object | ObjectId;
   email: string;
   username?: string;
   firstName: string;
@@ -19,7 +21,7 @@ export interface IUser {
 };
 
 export interface IEvent {
-  // make id optional to include new events that do not have an ID yet
+  id?: string | object | ObjectId;
   geometry: GeoJSON.Point;
   category?: string;
   title: string;
