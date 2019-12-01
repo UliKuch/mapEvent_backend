@@ -2,7 +2,6 @@ import { Document } from 'mongoose';
 import { ObjectId } from 'bson';
 
 export interface IComment {
-  // make id optional to include new comments that do not have an ID yet
   id?: string | object | ObjectId;
   user: IUser;
   message: string;
@@ -10,7 +9,7 @@ export interface IComment {
 }
 
 export interface IUser {
-  id?: string | object | ObjectId;
+  // no id field because of conflict with Document's id field
   email: string;
   username?: string;
   firstName: string;
@@ -21,7 +20,7 @@ export interface IUser {
 };
 
 export interface IEvent {
-  id?: string | object | ObjectId;
+  // no id field because of conflict with Document's id field
   geometry: GeoJSON.Point;
   category?: string;
   title: string;
