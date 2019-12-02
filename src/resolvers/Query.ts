@@ -47,7 +47,7 @@ export async function events(parent, args, context, info) {
 
 // *************** all events in radius of location ***************
 
-export async function eventsInRadius(parent, { radius, location }, context, info) {
+export async function eventsInRadius(parent, { radius, location, category }, context, info) {
 
   // find all events in radius of location
   const events = await Event.find({
@@ -57,10 +57,11 @@ export async function eventsInRadius(parent, { radius, location }, context, info
         $maxDistance: radius, // in meters
       }
     },
-    function(err, docs) {
-      if (err) return err;
-      return docs;
-    }
+    // also query by category if category argument is passed
+   ...(category && {category: category})
+  }, (err, docs) => {
+    if (err) return err;
+    return docs;
   })
 
   // populate createdBy field with a user and user's events field with events

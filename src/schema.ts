@@ -9,6 +9,7 @@ const typeDefs = gql`
     eventsInRadius (
       radius: Int!,
       location: GeoJSONPointInput!
+      category: String
     ): [Event!]!
   }
 
