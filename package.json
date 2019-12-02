@@ -6,7 +6,9 @@
   "scripts": {
     "start": "tsc && node dist/main.js",
     "dev": "nodemon dist/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-ts": "tsc",
+    "postinstall": "yarn run build-ts",
   },
   "engines": {
     "node": "12.13.1"
