@@ -8,6 +8,9 @@
     "dev": "nodemon dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": "12.13.1"
+  },
   "dependencies": {
     "apollo-server-express": "^2.9.11",
     "bcrypt": "^3.0.7",
