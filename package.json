@@ -8,7 +8,7 @@
     "dev": "nodemon dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-ts": "tsc",
-    "postinstall": "yarn run build-ts",
+    "postinstall": "yarn run build-ts"
   },
   "engines": {
     "node": "12.13.1"
