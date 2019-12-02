@@ -6,6 +6,10 @@ const typeDefs = gql`
       id: ID!,
     ): Event!
     events: [Event!]!
+    eventsInRadius (
+      radius: Int!,
+      location: GeoJSONPointInput!
+    ): [Event!]!
   }
 
   type Mutation {

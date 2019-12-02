@@ -43,3 +43,37 @@ export async function events(parent, args, context, info) {
 
   return events;
 }
+
+
+// *************** all events in radius of location ***************
+
+export async function eventsInRadius(parent, { radius, location }, context, info) {
+
+  // find all events in radius of location
+  const events = await Event.find({
+    geometry: {
+      $near: {
+        $geometry: location,
+        $maxDistance: radius, // in meters
+      }
+    },
+    function(err, docs) {
+      if (err) return err;
+      return docs;
+    }
+  })
+
+  // populate createdBy field with a user and user's events field with events
+  .populate({
+    path: 'createdBy',
+    populate: { path: 'events' }
+  })
+
+  // populate comments with users
+  .populate({
+    path: 'comments.user',
+    populate: { path: 'user' },
+  });
+
+  return events;
+}
