@@ -101,11 +101,13 @@ export async function addEvent(parent, args, context, info) {
     throw new AuthenticationError('You are not logged in or user does not exist.');
   }
 
-  // commented out because combination of coordinates is not unique yet
-  // const eventExists = await Event.findOne({ coordinates: args.coordinates });
-  // if (eventExists) {
-  //   throw new Error('An event with these exact coordinates already exists.');
-  // }
+  const long = args.coordinates[0];
+  const lat = args.coordinates[1];
+
+  // only allow valid coordinates
+  if (long < -180 || long > 180 || lat < -90 || lat > 90) {
+    throw new Error('Coordinates need to have the form [<longitude>, <latitude>]. Valid longitude values are between -180 and 180, valid latitude value are between -90 and 90.');
+  }
 
   const now: Date = new Date();
 
