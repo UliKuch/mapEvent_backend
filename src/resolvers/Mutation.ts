@@ -60,9 +60,6 @@ export async function signup(parent, args, context, info) {
 
 export async function login(parent, args, context, info) {
 
-  // hash password
-  const password = await bcrypt.hash(args.password, 10);
-
   // find user in db
   const user = await User.findOne({ email: args.email });
 
@@ -71,8 +68,10 @@ export async function login(parent, args, context, info) {
     throw new AuthenticationError('No user with this email address.')
   }
 
+  const passwordIsCorrect = await bcrypt.compare(args.password, user.password);
+  
   // throw error if password is incorrect
-  if (!bcrypt.compare(password, user.password)) {
+  if (!passwordIsCorrect) {
     throw new AuthenticationError('Password incorrect.')
   }
 
