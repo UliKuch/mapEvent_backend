@@ -51,7 +51,7 @@ eventSchema.index({ geometry: '2dsphere' });
 
 const Event: Model<IEventDocument> = mongoose.model('event', eventSchema);
 
-// // sends creteIndex commenad to db. not necassary as soon as index exists in db
+// // sends createIndex command to db. not necassary as soon as index exists in db
 // // commented out because not recommended for production (performance issue)
 // // see https://mongoosejs.com/docs/api.html#model_Model.ensureIndexes
 // Event.on('index', function (err) {
